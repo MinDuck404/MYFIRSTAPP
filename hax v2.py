@@ -47,7 +47,7 @@ def do_not_run_twice(func):
 @do_not_run_twice
 def auto(pkm, t):
     lAnswer.configure(text=pkm.lower())
-    pyperclip.copy(lAnswer)
+    pyperclip.copy(pkm.lower())
     pt.press('t')
     time.sleep(t)
     with pt.hold('ctrl'):

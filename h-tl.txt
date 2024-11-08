@@ -1116,3 +1116,5 @@ What was the name of the first Water/Grass type Pokemon?
 lotad
 Which Pokemon is also known as the Gloomdweller Pokemon?
 marshadow
+Which Pokemon is the Lunar Pokemon?
+cresselia
