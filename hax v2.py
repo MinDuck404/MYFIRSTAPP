@@ -1,5 +1,6 @@
 import time
 import pyautogui as pt
+import re
 from tkinter import *
 import tkinter as tk
 from threading import Thread
@@ -46,7 +47,7 @@ def do_not_run_twice(func):
 @do_not_run_twice
 def auto(pkm, t):
     lAnswer.configure(text=pkm.lower())
-    pyperclip.copy(pkm)
+    pyperclip.copy(lAnswer)
     pt.press('t')
     time.sleep(t)
     with pt.hold('ctrl'):
@@ -143,7 +144,11 @@ def run():
                 else:
                     # Xử lý câu hỏi trong quest
                     for idx, quest_item in enumerate(quest[::2]):
-                        if quest_item.lower() in following_line.lower():
+                        # Loại bỏ ký tự đặc biệt và so sánh
+                        cleaned_quest_item = re.sub(r'\W+', '', quest_item.lower())
+                        cleaned_following_line = re.sub(r'\W+', '', following_line.lower())
+                        
+                        if cleaned_quest_item in cleaned_following_line:
                             answer = quest[idx * 2 + 1].lower()
                             time_delay = q5 if len(answer) < 6 else len(answer) * q6 + 0.456
                             auto(answer, time_delay)
@@ -153,7 +158,10 @@ def run():
 
         elif 'You reeled in' in line:
             time.sleep(0.3254)
+            pt.press('t')
             pt.press('/eb')
+            pt.press('Enter')
+
 
 window = Tk()
 window.title("Yanoo's Program")
