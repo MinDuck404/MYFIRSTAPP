@@ -141,20 +141,24 @@ def run():
                                     auto(word,len(word)*(unr+0.211))
                                 
                                 break
+    
                 else:
                     # Xử lý câu hỏi trong quest
                     for idx, quest_item in enumerate(quest[::2]):
-                        # Loại bỏ ký tự đặc biệt và so sánh
-                        cleaned_quest_item = re.sub(r'\W+', '', quest_item.lower())
-                        cleaned_following_line = re.sub(r'\W+', '', following_line.lower())
-                        
+                        # Loại bỏ các ký tự không phải chữ cái, số và khoảng trắng (bao gồm cả dấu câu, dấu hỏi, etc.)
+                        cleaned_quest_item = re.sub(r'[^\w\s]', '', quest_item.lower()).strip()  # Loại bỏ ký tự không phải chữ cái, số
+                        cleaned_following_line = re.sub(r'[^\w\s]', '', following_line.lower()).strip()  # Xử lý `following_line` sau khi đã làm sạch
+
+                        # Loại bỏ tất cả các chữ 'n' (viết hoa hoặc viết thường) trong cả cleaned_quest_item và cleaned_following_line
+                        cleaned_quest_item = re.sub(r'n', '', cleaned_quest_item)  # Loại bỏ 'n' trong cleaned_quest_item
+                        cleaned_following_line = re.sub(r'n', '', cleaned_following_line)  # Loại bỏ 'n' trong cleaned_following_line
+
                         if cleaned_quest_item in cleaned_following_line:
                             answer = quest[idx * 2 + 1].lower()
                             time_delay = q5 if len(answer) < 6 else len(answer) * q6 + 0.456
                             auto(answer, time_delay)
                             break
-                    else:
-                        print('khong co trong danh sach')
+
 
         elif 'You reeled in' in line:
             time.sleep(0.3254)
