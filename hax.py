@@ -1,5 +1,5 @@
 import time
-import pyautogui as pt
+import re
 from tkinter import *
 import tkinter as tk
 from threading import Thread
@@ -8,23 +8,36 @@ import pyperclip
 import keyboard
 from tkinter import ttk
 import random
+import pygame
+import pygetwindow as gw
 
-active_counter=0
+active_counter = 0
+boss_active = False
+selected_window_title = ""
+
+# Initialize pygame mixer for playing sounds
+pygame.mixer.init()
+
+# Function to play notification sound
+def play_notification_sound():
+    pygame.mixer.music.load(notification_sound.get())
+    pygame.mixer.music.set_volume(notification_volume.get())
+    pygame.mixer.music.play()
 
 def follow(thefile):
-  thefile.seek(0,2)
-  while True:
-    line = thefile.readline()
-    if not line:
-      time.sleep(0.1)
-      continue
-    yield line
+    thefile.seek(0, 2)
+    while True:
+        line = thefile.readline()
+        if not line:
+            time.sleep(0.1)
+            continue
+        yield line
 
 def start_stop():
     global active_counter
     if button['text'] == 'Start':
         active_counter = 0
-        sta = Thread(target = run)
+        sta = Thread(target=run)
         sta.start()
         button.config(text="Stop")
     else:
@@ -34,7 +47,7 @@ def start_stop():
 def do_not_run_twice(func):
     prev_call = None
 
-    @functools.wraps(func) # It is good practice to use this decorator for decorators
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         nonlocal prev_call
         if (args, kwargs) == prev_call:
@@ -43,200 +56,237 @@ def do_not_run_twice(func):
         return func(*args, **kwargs)
     return wrapper
 
-@do_not_run_twice    
-def auto(pkm,t):
-    lAnswer.configure(text=pkm.lower())
-    pyperclip.copy(pkm)
-    pt.press('t')
-    time.sleep(t)
-    with pt.hold('ctrl'):
-      pt.press('a')
-      pt.press('v')
-    if t<2.5:
-      time.sleep(1)
-      pt.press('Enter')
-    else:
-      pt.press('Enter')
-    time.sleep(3)
+@do_not_run_twice
+def auto(pkm, t):
+    if not boss_active:
+        lAnswer.configure(text=pkm.lower())
+        pyperclip.copy(pkm.lower())
+        activate_selected_window()
+        keyboard.press('t')
+        keyboard.release('t')
+        time.sleep(t)
+        keyboard.press_and_release('ctrl+a')
+        time.sleep(0.1)
+        keyboard.press_and_release('ctrl+v')
+        if t < 2.5:
+            time.sleep(1)
+            keyboard.press_and_release('enter')
+        else:
+            keyboard.press_and_release('enter')
+        time.sleep(3)
+
+def activate_selected_window():
+    if selected_window_title:
+        try:
+            window = gw.getWindowsWithTitle(selected_window_title)[0]
+            window.activate()
+        except IndexError:
+            print("Selected window not found")
+
+def refresh_window_list():
+    windows = gw.getAllTitles()
+    combobox_window['values'] = [window for window in windows if window.strip()]
+
+def select_window(event):
+    global selected_window_title
+    selected_window_title = combobox_window.get()
+    print(f"Selected window: {selected_window_title}")
 
 def chayngaydi():
-    chay=Thread(target=click)
+    chay = Thread(target=click)
     chay.start()
 
 def click():
     global active_counter
-    tam=active_counter
+    tam = active_counter
     time.sleep(4)
-    mon=float(tClick.get())
-    if boss.get()==1:
-        active_counter=1
-    if check.get()==1:
-        if cb1.get()=='Righ Click':
-            while (not keyboard.is_pressed('`')) and check.get()==1:
-                pt.rightClick(interval=mon)
-        else:
-            while (not keyboard.is_pressed('`')) and check.get()==1:
-                pt.leftClick(interval=mon)
-        check.set(0)
-        active_counter=tam
-    if active_counter ==0:
-      sta = Thread(target = run)
-      sta.start()
+    mon = float(tClick.get())
+    while not keyboard.is_pressed('`') and check.get() == 1:
+        activate_selected_window()
+        keyboard.press_and_release('left')
+        time.sleep(mon)
+    check.set(0)
+    active_counter = tam
+    if active_counter == 0:
+        sta = Thread(target=run)
+        sta.start()
 
 def clickAFK():
     time.sleep(4)
-    if vAFK.get()==1:
-        while (not keyboard.is_pressed('`')) and vAFK.get()==1:
-            a=random.randint(60, 300)
-            pt.leftClick(interval=a)
+    if vAFK.get() == 1:
+        while not keyboard.is_pressed('`') and vAFK.get() == 1:
+            a = random.randint(60, 300)
+            activate_selected_window()
+            keyboard.press_and_release('left')
+            time.sleep(a)
         vAFK.set(0)
 
 def afk():
-    AFK=Thread(target=clickAFK)
+    AFK = Thread(target=clickAFK)
     AFK.start()
 
-
 def run():
-    dex=float(tdex.get())
-    unr=float(tUnscramble.get())
-    q5=float(tQuest5.get())
-    q6=float(tQuest.get())
-    f = open("Pokedex.txt",'r')
-    a = f.read().splitlines()
-    q=open('h-tl.txt','r')
-    quest=q.read().splitlines()
+    global boss_active
+    dex = float(tdex.get())
+    unr = float(tUnscramble.get())
+    q5 = float(tQuest5.get())
+    q6 = float(tQuest.get())
+    with open("Pokedex.txt", 'r') as f:
+        a = f.read().splitlines()
+    with open('h-tl.txt', 'r') as q:
+        quest = q.read().splitlines()
+
     logfile = open(r'C:\Users\duccj\AppData\Roaming\.technic\modpacks\ultimate-reallife-roleplay\logs\latest.log', 'r')
-
     loglines = follow(logfile)
+
+    boss_thread = Thread(target=toggle_boss_mode)
+    boss_thread.start()
+
     for line in loglines:
-      if active_counter==1:
-        break
-      if "Professor Oak" in line:
-        print('ok')
+        if active_counter == 1:
+            break
 
-        if " dex number" in line:
-          i=-3
-          m=1
-          pkm=0
-          while line[i] != ' ':
-            if line[i] in {'0','1','2','3','4','5','6','7','8','9'}:
-              pkm = pkm + int((line[i]))*m
-              i-=1
-              m=m*10
-          auto((a[pkm-1]),len(a[pkm-1])*dex+1.2145)
-          
-        if "Unscramble the word" in line:
-          i=-2
-          pkm=''
-          while line[i] != ' ':
-            pkm = pkm + (line[i])
-            i-=1
-          for p in a:
-            if len(pkm) == len(p):
-              x=p.lower()
-              cc= len( set(x) & set(pkm) )
-              if cc == len(set(x)):
-                l1=sorted(pkm)
-                l2=sorted(x)
-                if l1==l2:
-                  if len(x)<5:
-                    auto(x,len(x)*unr)
-                  elif len(x)<=9:
-                    auto(x,len(x)*(unr+0.111))
-                  else:
-                    auto(x,len(x)*(unr+0.211))
+        if "Professor Oak" in line:
+            next_lines = [next(loglines) for _ in range(3)]
+            for following_line in next_lines:
+                if " dex number" in following_line:
+                    i = -3
+                    m = 1
+                    pkm = 0
+                    while following_line[i] != ' ':
+                        if following_line[i].isdigit():
+                            pkm += int(following_line[i]) * m
+                            i -= 1
+                            m *= 10
+                    auto(a[pkm-1], len(a[pkm-1]) * dex + 1.2145)
+                    break
+                elif "Unscramble the word" in following_line:
+                    scrambled_word = following_line.split(":")[-1].strip()
+                    print(f"Scrambled word detected: {scrambled_word}")
+                    for word in a:
+                        if len(word) == len(scrambled_word):
+                            if sorted(word.lower()) == sorted(scrambled_word.lower()):
+                                if len(word) < 5:
+                                    auto(word, len(word) * unr)
+                                elif len(word) <= 9:
+                                    auto(word, len(word) * (unr + 0.111))
+                                else:
+                                    auto(word, len(word) * (unr + 0.211))
+                                break
+                else:
+                    for idx, quest_item in enumerate(quest[::2]):
+                        cleaned_quest_item = re.sub(r'[^\w\s]', '', quest_item.lower()).strip()
+                        cleaned_following_line = re.sub(r'[^\w\s]', '', following_line.lower()).strip()
 
-        # if 'Click the' in line:
-        #     pt.press('t')
-        #     pt.click(784,565)
-        #     time.sleep(0.5)
-        #     pt.press('Enter')
+                        cleaned_quest_item = re.sub(r'n', '', cleaned_quest_item)
+                        cleaned_following_line = re.sub(r'n', '', cleaned_following_line)
 
-        else:
-          d=0
-          for i in quest:
-            if d%2 == 0:
-              if i !='':
-                traloi=i.lower()
-                cauhoi=line.lower()
-                if traloi in cauhoi:
-                  if (d+1)%2 !=0:
-                    if len(quest[d+1])<6:
-                      auto(quest[d+1].lower(),q5)
-                    else:
-                        auto(quest[d+1].lower(),len(quest[d+1])*q6+0.456)
-            d+=1
-      if 'It got away!' in line:
-        time.sleep(0.3254)
-        pt.rightClick()
+                        if cleaned_quest_item in cleaned_following_line:
+                            answer = quest[idx * 2 + 1].lower()
+                            time_delay = q5 if len(answer) < 6 else len(answer) * q6 + 0.456
+                            auto(answer, time_delay)
+                            break
 
+        if "spawned nearby!" in line or re.search(r'\[Pixelmon\].*has spawned in a', line):
+            play_notification_sound()
 
-window=Tk()
+def toggle_boss_mode():
+    global boss_active
+    while True:
+        if keyboard.is_pressed('`'):
+            boss_active = not boss_active
+            boss.set(boss_active)
+            while keyboard.is_pressed('`'):
+                time.sleep(0.1)
+            if boss_active:
+                boss_func = Thread(target=boss_press_r)
+                boss_func.start()
+
+def boss_press_r():
+    while boss_active:
+        interval = float(tClick.get())
+        activate_selected_window()
+        keyboard.press_and_release('r')
+        time.sleep(interval)
+
+def on_closing():
+    global active_counter, boss_active
+    active_counter = 1
+    boss_active = False
+    window.destroy()
+
+window = Tk()
 window.title("Yanoo's Program")
 window.iconbitmap("yano.ico")
 
-#label
-ldex=Label(window,text='Dex Number: ',font=('Arial',15))
-ldex.grid(column=0,row=1)
-lUnscramble=Label(window,text='Unscramble: ',font=('Arial',15))
-lUnscramble.grid(column=0,row=2)
+window.protocol("WM_DELETE_WINDOW", on_closing)
 
-lQuest5=Label(window,text='Quest < 5: ',font=('Arial',15))
-lQuest5.grid(column=0,row=3)
+ldex = Label(window, text='Dex Number: ', font=('Arial', 15))
+ldex.grid(column=0, row=1)
+lUnscramble = Label(window, text='Unscramble: ', font=('Arial', 15))
+lUnscramble.grid(column=0, row=2)
+lQuest5 = Label(window, text='Quest < 5: ', font=('Arial', 15))
+lQuest5.grid(column=0, row=3)
+lQuest = Label(window, text='Quest > 5: ', font=('Arial', 15))
+lQuest.grid(column=0, row=4)
+lAnswer = Label(window, text='Answer', font=('Arial', 20))
+lAnswer.grid(column=0, row=5)
+lClick = Label(window, text='time: ', font=('Arial', 15))
+lClick.grid(column=0, row=7)
 
-lQuest=Label(window,text='Quest > 5: ',font=('Arial',15))
-lQuest.grid(column=0,row=4)
+tdex = Entry(window, width=20)
+tdex.insert(END, 0.324)
+tUnscramble = Entry(window, width=20)
+tUnscramble.insert(END, 0.214)
+tUnscramble.grid(column=1, row=2)
 
-lAnswer=Label(window,text='Answer',font=('Arial',20))
-lAnswer.grid(column=0,row=5)
+tQuest5 = Entry(window, width=20)
+tQuest5.insert(END, 0.123)
+tQuest5.grid(column=1, row=3)
 
-lClick=Label(window,text='time: ',font=('Arial',15))
-lClick.grid(column=0,row=7)
+tQuest = Entry(window, width=20)
+tQuest.insert(END, 0.456)
+tQuest.grid(column=1, row=4)
 
-#text box
-tdex=Entry(window,width=20)
-tdex.insert(END,0.324)
-tdex.grid(row=1,column=1,ipady=1,ipadx=1)
+tClick = Entry(window, width=20)
+tClick.insert(END, 2.5)
+tClick.grid(column=1, row=7)
 
-tUnscramble=Entry(window,width=20)
-tUnscramble.insert(END,0.244)
-tUnscramble.grid(column=1,row=2)
+button = Button(window, text="Start", font=('Arial', 15), command=start_stop)
+button.grid(column=0, row=6)
 
-tQuest5=Entry(window,width=20)
-tQuest5.insert(END,1.657)
-tQuest5.grid(column=1,row=3)
+check = IntVar()
+check_button = Checkbutton(window, text="Enable", variable=check, font=('Arial', 15), command=chayngaydi)
+check_button.grid(column=1, row=6)
 
-tQuest=Entry(window,width=20)
-tQuest.insert(END,0.234)
-tQuest.grid(column=1,row=4)
+vAFK = IntVar()
+afk_button = Checkbutton(window, text="AFK", variable=vAFK, font=('Arial', 15), command=afk)
+afk_button.grid(column=2, row=6)
 
-tClick=Entry(window,width=20)
-tClick.insert(END,0.1)
-tClick.grid(column=1,row=7)
+boss = BooleanVar()
+boss_button = Checkbutton(window, text="Boss Mode", variable=boss, font=('Arial', 15))
+boss_button.grid(column=2, row=7)
 
-#button
-button=Button(window,text='Start',command=start_stop)
-button.grid(row = 0, column = 0, sticky = EW,columnspan=4)
+notification_sound = StringVar()
+notification_sound.set("notification.mp3")
+notification_label = Label(window, text="Notification Sound:", font=('Arial', 15))
+notification_label.grid(column=0, row=8)
+notification_entry = Entry(window, textvariable=notification_sound, width=20)
+notification_entry.grid(column=1, row=8)
 
-#check box
-check = tk.IntVar()
-boss=tk.IntVar()
-vAFK=tk.IntVar()
-c1 = tk.Checkbutton(window, text='AutoClick',variable=check, onvalue=1, offvalue=0, command=chayngaydi)
-c1.grid(column=0,row=6)
+notification_volume = DoubleVar()
+notification_volume.set(0.5)
+volume_label = Label(window, text="Volume:", font=('Arial', 15))
+volume_label.grid(column=0, row=9)
+volume_slider = Scale(window, from_=0, to=1, resolution=0.1, orient=HORIZONTAL, variable=notification_volume)
+volume_slider.grid(column=1, row=9)
 
-c2=tk.Checkbutton(window, text='Boss?',variable=boss, onvalue=1, offvalue=0)
-c2.grid(column=1,row=6)
+combobox_window = ttk.Combobox(window, width=50)
+combobox_window.grid(column=0, row=10, columnspan=2)
+refresh_button = Button(window, text="Refresh Windows", command=refresh_window_list)
+refresh_button.grid(column=2, row=10)
+combobox_window.bind("<<ComboboxSelected>>", select_window)
 
-Cafk=Checkbutton(window,text='AFK Mode',variable=vAFK, onvalue=1, offvalue=0,command=afk)
-Cafk.grid(column=0,row=8, sticky = EW,columnspan=4)
-
-
-#combo box
-idk = tk.StringVar()
-cb1=ttk.Combobox(window,width=10,textvariable = idk)
-cb1['values'] = ('Righ Click','Left Click')
-cb1.grid(column=3,row =6)
-cb1.current(0)
-
+refresh_window_list()
 window.mainloop()
+
