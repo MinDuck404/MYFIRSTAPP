@@ -1,0 +1,15 @@
+# Ignore all folders except train_model
+*/
+
+# Do not ignore train_model folder
+!train_model/
+
+# Ignore specific folders
+node_modules/
+dist/
+build/
+tmp/
+logs/
+
+# Ignore zip files
+*.zip

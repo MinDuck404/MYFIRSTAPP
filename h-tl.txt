@@ -58,6 +58,8 @@ What is the name of Alolan Raichu's unique Z-Move?
 stoked sparksurfer
 What Pokemon is known as the 'Sea Lion' Pokemon?
 Popplio
+Name a Developer of the Network
+shiki
 What type of Pokemon does Misty train?
 water
 What Pokemon attracts prey with its sweet-smelling drool and gulps them down?
@@ -112,7 +114,7 @@ What is the name of Eevee's unique Z-Move?
 extreme evoboost
 What type of Pokemon is Misty afraid of?
 bug
-What power item helps train Pokemon in defence EVs?
+What power item helps train Pokemon in \n????defence EVs?
 power belt
 What is the name of Ultra Necrozma's unique Z-Move?
 Light that burns the sky
@@ -142,7 +144,7 @@ What does the Smogon tier 'UU' stand for?
 under used
 Which server is Milotic the mascot of?
 verse
-did Jessie accidentally traded to receive Wobbuffet?
+did Jessie accidentally \n????trade to receive Wobbuffet?
 Lickitung
 What Gen 8 Pokemon is in both the Fairy and Mineral egg groups?
 Falinks
@@ -152,6 +154,8 @@ What Pokemon attracts prey with its sweet-smelling drool and gulps them down?
 Carnivine
 Which Pokemon is also known as the Seed Pokemon?
 Venusaur
+What is the relation of Gary with \n????Professor Oak?
+grandson
 What is the name of Solgaleo's unique Z-Move?
 Searing Sunraze Smash
 Which town in the Kanto games has infamous creepy music?
@@ -180,6 +184,8 @@ What is the female character from Black 2 and White 2's name?
 rosa
 What Pokemon was in Gen 1 of the Pokemon anime but was introduced in Gen 2?
 ho-oh
+What was the name of the Scientist who \n????created Magearna 500 years ago?
+nikola
 Name a Pokemon whose name is a Palindrome
 eevee
 What is Kyurem's type?
@@ -189,7 +195,7 @@ floette Flabebe
 What is the Ice type Dynamax move?
 Max Hailstorm
 Which base Pokemon has the highest Special Attack?
-shadow rider calyrex
+xurkitree
 What Pokemon is known as the lonely Pokemon?
 cubone
 What must you have installed to use /dr?
@@ -198,6 +204,8 @@ that evolves when exposed to a Water stone besides Eevee.
 poliwhirl
 What Pokemon has the highest base HP of all Rock-Type Pokemon?
 aurorus
+What legendary Pokemon can be caught \n????with any type of Pokeball without it \n????failing?
+eternatus
 Which region does not have a notable Ice type expert?
 alola
 What legendary Pokemon creates oceans wherever it goes?
@@ -208,6 +216,8 @@ What Pokemon absorbs all life energy when it dies?
 yveltal
 What Pokemon is known as the 'Cheeky Pokemon'?
 skwovet
+Who is Olivia's signature Pokemon?
+Lycanroc dusk
 What Pokemon did Ash first catch in the Sinnoh region?
 starly
 Which 2 Pokemon are known as the Warrior Pokemon?
@@ -218,6 +228,8 @@ What legendary Pokemon is called The North Wind?
 suicune
 What ability does Mega Charizard Y get?
 drought
+What does Zubat not have?
+eyes
 What is the largest Pokemon to exist?
 eternatus
 What type only has one weakness?
@@ -229,7 +241,9 @@ pikachu
 What item heals a Pokemon in battle after every turn without any active effects?
 leftovers
 What was the first ever mega 
-lucario
+Lucario
+Name a Pokemon with a base stat total \n????of 550
+Volcarona
 Into what Eeveelution did Serena's Eevee evolve into?
 sylveon
 In which event do you jump to the end of the map in order to win?
@@ -238,6 +252,8 @@ Which Pokemon, when Gigantamaxed, can use G-Max Chi Strike?
 machamp
 What kind of stone do you need to evolve Gloom into Vileplume?
 leaf stone
+From Generation 1, which Pokemon is \n????known for its deadly kicks?
+Hitmonlee
 Which server is Lugia the mascot of?
 dash
 What is the second most common type?
@@ -246,6 +262,8 @@ In the Discord, where can you find all the recent Server changes?
 changelog
 What color is Shiny Ditto?
 blue
+Which Pokemon, when Gigantamaxed, can \n????use G-Max Meltdown?
+melmetal
 What is the mascot of PokeDream?
 mewtwo
 What Pokemon does Pikachu evolve into?
@@ -280,6 +298,8 @@ What biome does Zarude spawn in?
 jungle m
 Who is known as the Wishmaker Pokemon?
 jirachi
+Who is Malva's signature Pokemon?
+talonflame
 What biome does Zacian spawn in?
 forest
 What is the only Ultra Beast that can evolve?
@@ -294,6 +314,8 @@ What is the fossil used to revive an Aerodactyl?
 old amber
 Which is the only Pokemon to give off a Blue Aura when Dynamaxed?
 calyrex
+Name a Pokemon that is in both the \n????Human-like and Bug egg groups.
+Volbeat
 Name a pokemon that has '-dos' at the end of its name
 zapdos
 What Pokemon has the lowest total stats in the games?
@@ -332,6 +354,8 @@ What game do you travel around a map taking pictures of Pokemon?
 pokemon snap
 Name one of the 'Brutal Pokemon'
 hydreigon
+What power item helps train Pokemon in \n????special defence EVs?
+power band
 Which Pokemon is also known as the King Pokemon?
 calyrex
 What type of Pokemon is Delibird?
@@ -340,6 +364,8 @@ What Pokemon is the only Pokemon that can use Max Moves without Dynamaxing?
 eternatus
 Which base Pokemon has the highest Speed?
 regieleki
+Name a Pokemon that is in both the \n????Grass and Bug egg groups.
+paras
  has the longest name in English at 12 letters?
 crabominable
 Name a Pokemon that is in both the Mineral and Bug egg groups.
@@ -384,6 +410,8 @@ What is the name of Incineroar's unique\n???? Z-Move?
 Maliciousmoonsault
 Which base Pokemon has the highest Attack?
 kartana
+could supposedly be \n????found under a truck in Gen 1?
+mew
 What was the first Pokemon Ash caught in the Johto region?
 Heracross
 Who was responsible for killing Cubone's mother?
@@ -394,6 +422,8 @@ What is the relation of Gary with Professor Oak?
 grandson
  that evolves when exposed to an Ice stone besides Eevee.
 alola vulpix
+What Pokemon is said to be attached to \n????Slowbro's tail?
+shellder
 Which Pokémon evolves twice via trading?
 porygon
 What is the name for Necrozma and Lunala's fusion?
@@ -404,6 +434,8 @@ What move has a base power of 200 when the Pokemon's health is below 4%?
 reversal
 When the Donation Goal is met, the players will be rewarded with a __?
 dp
+What is the name of the bridge you \n????cross to reach Bill's house?
+Nugget bridge
 What Pokemon does not require a Mega stone to Mega evolve?
 rayquaza
 What was Brock's dream job?
@@ -412,6 +444,8 @@ What is Lycanroc's third released form called?
 dusk
 Which move was a mistranslation of the Japanese word 'hop'?
 splash
+Who is Koga's signature Pokemon?
+Crobat
 Name one of Burmy's Forms.
 trash cloak
 What is the first line of the original English opening theme song?
@@ -422,6 +456,10 @@ What is the mascot of PokeFlash?
 raichu
 Who upgrades the player's mega ring in X and Y?
 sycamore
+Name an Ex-Manager of the Network
+shy
+What is the evolved form of Ekans?
+arbok
 How much playtime is needed for Veteran rank?
 12 days
 What Pokemon can move entire mountains with one hand?
@@ -432,6 +470,8 @@ What is Scizor's pre-evolved form?
 scyther
 Who is waiting to fight at the peak of Mt. Silver?
 red
+What is the name of the town Ash grew \n????up in?
+pallet town
 What Legendary Pokemon did Ash see on the first day of his journey?
 ho-oh
 Where does Marshadow spawn?
@@ -442,6 +482,8 @@ Ash's friend Litten made friends with what Pokemon?
 stoutland
 In the anime what city does Brock live in?
 pewter
+What Pokemon can breed with every \n????Pokemon? excluding Legendaries and \n????Ultra Beasts.
+ditto
 What Pokemon does the anime Team Rocket have with them at all times?
 meowth
 Name one of the lightest Pokemon.
@@ -456,6 +498,8 @@ What held item is used to turn Kyogre into Primal Kyogre?
 blue orb
 What held item is used to turn Groudon into Primal Groudon?
 red orb
+Which generation introduced the least \n????amount of unique dex entries?
+6
 What is the method of increasing shiny chances through breeding called?
 masuda
 What Pokemon was revealed in a movie before it was actually released?
@@ -483,25 +527,31 @@ lucky egg
 What type of Pokemon is Jirachi?
 steel psychic
 Name a biome that Volcanion spawns in.
-Desert M
+Desert lakes
 What is the name of Mew's unique Z-Move?
 genesis supernova
 In the Second-generation games, which Pokemon greets you at your door when you first exit your house?
 Ho-Oh
 What mode of transportation does Ash love destroying?
 bikes
+Name one of the Lake Trio Legendaries.
+uxie
 Which Pokemon is the only fully evolved Pokemon that can't learn any TMs?
 Wobbuffet
 What berry lowers a pokemons attack EVs?
 Kelpsy
 Name a Pokemon that both Ash and Misty owned?
 togepi
+did Misty sadly release to \n????save their friends?
+togetic
 Which Pokemon is also known as the Grudge Pokemon?
 Runerigus
 Which pokemon is known as the Fresh Snow Pokemon
 Glaceon
 Reshiram is Dragon type and?
 fire
+In the Second-generation games, which \n????Pokemon greets you at your door when \n????you first exit your house?
+marill
 What type was the move Curse before Generation 5?
 ???
 A Pokemon has a Fighting, Psychic, Bug & Rock move, name one Pokemon that still resists or is immune to all these attacks.
@@ -597,7 +647,7 @@ qualot
 Name a Pokemon that is in both the 'Mineral' and the 'Monster' Egg group.
 bergmite
 Where does Zeraora spawn?
-savanna plateau m
+shattered savanna plateau
 What action does Brock do in nearly all episodes?
 flirt
 What city in Hoenn has the only Gym to have double battles?
@@ -641,7 +691,7 @@ machamp
 What Pokemon turns invisible underwater?
 vaporeon
 Where would you go to revive your fainted Pokemon?
-pokecenter
+pc
 Pokemon games and their characters were made originally inspired by what type of animal?
 insects
 What two pokemon were static encounters in Generation 4 despite not being a legendaries?
@@ -720,6 +770,8 @@ What is the Water type Eeveelution?
 vaporeon
 What is the fastest Pokemon?
 regieleki
+How many cards are there in a P
+60
 What Pokemon has no weaknesses?
 eelektrik
 Which Psychic Pokemon has the highest defence stat of all Psychic Pokemon?
@@ -733,7 +785,9 @@ multiscale
 How many brothers and sisters does Brock have in total?
 8
 Which Pokemon type has the most resistances?
-Magnemite
+steel
+In the early games, what were the \n????towns named after?
+colors
 What is the name of Primarina's unique Z-Move?
 Oceanic Operetta
 Which Pokemon battles Gengar in the opening scene of the Pokemon anime?
@@ -744,6 +798,8 @@ What ability allows Normal type moves to damage Ghost type Pokemon?
 Scrappy
 What is the mascot of PokeBlaze?
 mega charizard x
+What is Primarina's hidden ability?
+Liquidvoice
 What pokemon is almost never seen in motion?
 slakoth
 Name a Pokémon that is both Dragon- and Flying-type.
@@ -813,7 +869,7 @@ blue
 Which legendary is known to be the 'Guardian of the Sea'?
 lugia
 What block do you use to breed Pokemon?
-ranch
+daycare
 constantly drags Team Rocket with them in the Alola region?
 bewear
 What is Pokemon's official mascot Pokemon?
@@ -890,6 +946,8 @@ Which event has 4 different colors that disappear randomly until one person rema
 corners
 What is the most common type paired with Fire starters?
 fighting
+What Pokemon can move entire \n????mountains with one hand?
+Machamp
 Which Legendary Pokemon is known to randomly appear throughout the Johto region?
 suicune
 What item changes Deoxys form?
@@ -915,7 +973,7 @@ Stakataka
 What are the names of the Legendary Beasts?
 entei raikou suicune
 What biome does Glastrier spawn in?
-ice plains
+Snowy tundra
 What biome does Calyrex spawn in?
 cold taiga
 What type of Pokemon is Deoxys?
@@ -996,6 +1054,8 @@ What ball is said to have a near perfect catch rate?
 masterball
 What Pokemon is Pikachu's pre-evolution?
 pichu
+What is the fastest Ghost-type?
+calyrex shadow rider
 Name a Pokemon that is in both the Water 1 and Fairy egg groups
 azumarill
 Who is the professor of the Unova region?
@@ -1004,6 +1064,8 @@ What pokemon requires you to have a remoraid in your party to evolve?
 mantyke
 Name a Manager of PokeSaga
 shy
+Who gives Ash his first Pokemon?
+oak
 Which unlikely electric Pokemon helped win a world championship by facing dragons?
 pachirisu
 Who was Ash's rival in Sinnoh?
@@ -1011,7 +1073,7 @@ paul
 Prior to Gold and Silver coming out, what\n???? did many websites incorrectly refer to\n???? Marill as?
 pikablu
 What Pokemon does Brock's Croagunk battle at the beginning of Pokemon 10 The Movie?
-
+infernape
 Which Pokemon has the most immunities?
 Shedinja
 Which base Pokemon has the highest HP?
@@ -1036,6 +1098,8 @@ Who is Lt. Surge's signature Pokemon?
 raichu
 In what Gen 5 Gym did the leader only use 3 Pokemon, but Ash used 6?
 BW083
+Where can you find the Servers staff?
+staff
 In which event do you jump to the top of the map in order to win?
 aircore
 What colour is Shiny Rayquaza?
@@ -1043,7 +1107,7 @@ black
 What colour is Shiny Kyogre?
 pink
 Where does Regirock spawn?
-mesa
+Badlands
 What are the Ultra Beast's ability?
 beast boost
 At which warp would you summon the Legendary Birds?
@@ -1084,8 +1148,8 @@ What Pokemon has the lowest HP in battle?
 shedinja
 What is the mascot of PokeSplash?
 squirtle
-Which Pokemon is also known as the Flash Pokemon?
-Volbeat
+Which Pokemon is also known as the \n????Flash Pokemon?
+shinx
 What pokemon is known as the Thorn Pod Pokemon?
 Ferrothorn
 Who is the boss of Team Rocket?
