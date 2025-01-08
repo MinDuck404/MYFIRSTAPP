@@ -632,6 +632,8 @@ What Pokemon is the Fairy type Eeveelution?
 Sylveon
 Who won the Sinnoh league?
 tobias
+Who is Steven's signature Pokemon?
+Mega metagross
 What feather helps train Pokemon in hp EVs?
 health feather
 What held item increases speed by 50%, but makes the Pokemon only be able to use one move?
@@ -974,6 +976,8 @@ What are the names of the Legendary Beasts?
 entei raikou suicune
 What biome does Glastrier spawn in?
 Snowy tundra
+Name a Pokemon that's apart of the \n????Swords of Justice.
+keldeo
 What biome does Calyrex spawn in?
 cold taiga
 What type of Pokemon is Deoxys?
@@ -982,6 +986,8 @@ What Pokemon is Victini known as?
 victory
 At what time does Keldeo spawn in Pixelmon?
 day
+What is the other form of Keldeo \n????called?
+resolute
 What is Zacian's ability?
 intrepid sword
 What color is Mew's shiny form?
