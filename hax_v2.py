@@ -48,6 +48,44 @@ def follow(thefile):
             continue
         yield line
 
+
+def with_cooldown(cooldown_time):
+    def decorator(func):
+        last_run_time = 0
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            nonlocal last_run_time
+            current_time = time.time()
+            if current_time - last_run_time > cooldown_time:
+                last_run_time = current_time
+                return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@with_cooldown(5)
+def handle_fishing_competition():
+        play_notification_sound()
+        activate_selected_window()
+        time.sleep(0.2)
+        keyboard.press(Key.end)
+        keyboard.release(Key.end)
+        time.sleep(60*31)
+        keyboard.press(Key.end)
+        keyboard.release(Key.end)
+        time.sleep(0.2)
+
+@with_cooldown(2)
+def handle_hook_action():
+        activate_selected_window()
+        time.sleep(0.3)
+        mouse.click(MouseButton.right)
+
+@with_cooldown(5)
+def handle_vote_party():
+        play_notification_sound()
+        activate_selected_window()
+        time.sleep(0.2)
+
 def start_stop():
     global active_counter
     if button['text'] == 'Start':
@@ -157,85 +195,71 @@ def run():
         if active_counter == 1:
             break
         
-        # if "Professor Oak" in line:
-        #     next_lines = [next(loglines) for _ in range(3)]
-        #     for following_line in next_lines:
-        #         if " dex number" in following_line:
-        #             # Lấy dex number
-        #             i = -3
-        #             m = 1
-        #             pkm = 0
-        #             while following_line[i] != ' ':
-        #                 if following_line[i].isdigit():
-        #                     pkm += int(following_line[i]) * m
-        #                     i -= 1
-        #                     m *= 10
-        #             auto(a[pkm-1], len(a[pkm-1]) * dex + 1.2145)
+        if "Professor Oak" in line:
+            next_lines = [next(loglines) for _ in range(3)]
+            for following_line in next_lines:
+                if " dex number" in following_line:
+                    # Lấy dex number
+                    i = -3
+                    m = 1
+                    pkm = 0
+                    while following_line[i] != ' ':
+                        if following_line[i].isdigit():
+                            pkm += int(following_line[i]) * m
+                            i -= 1
+                            m *= 10
+                    auto(a[pkm-1], len(a[pkm-1]) * dex + 1.2145)
                 
-        #         elif "Unscramble the word" in following_line:
-        #             # Xử lý giải mã từ
-        #             scrambled_word = following_line.split(":")[-1].strip()
-        #             print(f"Scrambled word detected: {scrambled_word}")
-        #             for word in a:
-        #                 if len(word) == len(scrambled_word):
-        #                     if sorted(word.lower()) == sorted(scrambled_word.lower()):
-        #                         if len(word)<5:
-        #                             auto(word,len(word)*unr)
-        #                         elif len(word)<=9:
-        #                             auto(word,len(word)*(unr+0.111))
-        #                         else:
-        #                             auto(word,len(word)*(unr+0.211))
+                elif "Unscramble the word" in following_line:
+                    # Xử lý giải mã từ
+                    scrambled_word = following_line.split(":")[-1].strip()
+                    print(f"Scrambled word detected: {scrambled_word}")
+                    for word in a:
+                        if len(word) == len(scrambled_word):
+                            if sorted(word.lower()) == sorted(scrambled_word.lower()):
+                                if len(word)<5:
+                                    auto(word,len(word)*unr)
+                                elif len(word)<=9:
+                                    auto(word,len(word)*(unr+0.111))
+                                else:
+                                    auto(word,len(word)*(unr+0.211))
                                 
-        #         elif "Pixelmon will begin in 10 seconds!" in following_line:
-        #             pass
+                elif "Pixelmon will begin in 10 seconds!" in following_line:
+                    pass
                 
-        #         else:        
-        #                 # Xử lý câu hỏi trong quest
-        #                 for idx, quest_item in enumerate(quest[::2]):
-        #                     # Loại bỏ các ký tự không phải chữ cái, số và khoảng trắng (bao gồm cả dấu câu, dấu hỏi, etc.)
-        #                     cleaned_quest_item = re.sub(r'[^\w\s]', '', quest_item.lower()).strip() # Loại bỏ ký tự không phải chữ cái, số
-        #                     cleaned_following_line = re.sub(r'[^\w\s]', '', following_line.lower()).strip() # Xử lý `following_line` sau khi đã làm sạch
+                else:        
+                        # Xử lý câu hỏi trong quest
+                        for idx, quest_item in enumerate(quest[::2]):
+                            # Loại bỏ các ký tự không phải chữ cái, số và khoảng trắng (bao gồm cả dấu câu, dấu hỏi, etc.)
+                            cleaned_quest_item = re.sub(r'[^\w\s]', '', quest_item.lower()).strip() # Loại bỏ ký tự không phải chữ cái, số
+                            cleaned_following_line = re.sub(r'[^\w\s]', '', following_line.lower()).strip() # Xử lý `following_line` sau khi đã làm sạch
                         
-        #                     # Loại bỏ tất cả các chữ 'n' (viết hoa hoặc viết thường) trong cả cleaned_quest_item và cleaned_following_line
-        #                     cleaned_quest_item = re.sub(r'n', '', cleaned_quest_item)  
-        #                     cleaned_following_line = re.sub(r'n', '', cleaned_following_line)  # Loại bỏ 'n' trong cleaned_following_line
+                            # Loại bỏ tất cả các chữ 'n' (viết hoa hoặc viết thường) trong cả cleaned_quest_item và cleaned_following_line
+                            cleaned_quest_item = re.sub(r'n', '', cleaned_quest_item)  
+                            cleaned_following_line = re.sub(r'n', '', cleaned_following_line)  # Loại bỏ 'n' trong cleaned_following_line
 
 
-        #                     if cleaned_quest_item in cleaned_following_line:
-        #                         answer = quest[idx * 2 + 1].lower()
-        #                         time_delay = q5 if len(answer) < 6 else len(answer) * q6 + 0.456
-        #                         auto(answer, time_delay)
+                            if cleaned_quest_item in cleaned_following_line:
+                                answer = quest[idx * 2 + 1].lower()
+                                time_delay = q5 if len(answer) < 6 else len(answer) * q6 + 0.456
+                                auto(answer, time_delay)
                                 
-        # # Detect spawn messages and play notification sound
-        # Azelf Manaphu Nihilego Latios Latias Suicune
-        if "spawned nearby!" in line or re.search(r'\[Pixelmon\].*has spawned in a', line) or "Fishing Competition Started" in line or "votes remaining until the next Vote Party!" in line or "World Boss has spawned!" in line or any(pokemon in line for pokemon in ["Azelf", "Manaphy", "Nihilego", "Latios", "Latias", "Suicune"]) and "You reeled in" in line or "Yano" in line or "Yanoo" in line or "yano" in line or "yanoo" in line:
-            play_notification_sound()
-        if "hook was instantly bit" in line:
-            random_variable = random.randint(1, 4444)
-            fishing(random_variable)
-            if fishing:
-                activate_selected_window()
-                time.sleep(0.6)
-                mouse.click(MouseButton.right)
-                time.sleep(1)
-                keyboard.press('2')
-                keyboard.release('2')
-                time.sleep(0.5)
-                keyboard.press('1')
-                keyboard.release('1')
-            
-        if "You can only use custom fishing rods at the Fishing Warp!" in line:
-            # random_variable = random.randint(1, 4444)
-            # fishing(random_variable)
-            # if fishing:
-                activate_selected_window()
-                time.sleep(0.2)
-                keyboard.press(Key.end)
-                keyboard.release(Key.end)
+        elif "spawned nearby!" in line or re.search(r'\[Pixelmon\].*has spawned in a', line)  or "votes remaining until the next Vote Party!" in line or "World Boss has spawned!" in line  or "Yanoo" in line or "yano" in line or "yanoo" in line:
+            handle_vote_party()
+        elif any(pokemon in line for pokemon in ["Azelf", "Manaphy", "Nihilego", "Latios", "Latias", "Suicune"]) and "You reeled in" in line:
+            handle_vote_party()
 
-        # if "reeled in" in line:
-        #     keyboard.type('/eb')
-        #     keyboard.press(Key.enter)
+        elif "Fishing Competition Started" in line:
+            handle_fishing_competition()
+
+        elif "hook was instantly bit" in line:
+            random_variable = random.randint(1, 4444)
+            if fishing(random_variable):
+                handle_hook_action()
+
+        elif "You can only use custom fishing rods at the Fishing Warp!" in line:
+                handle_fishing_competition()
+
 
 
 def toggle_boss_mode():

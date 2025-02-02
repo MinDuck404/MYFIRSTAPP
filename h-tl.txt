@@ -314,6 +314,8 @@ What is the fossil used to revive an Aerodactyl?
 old amber
 Which is the only Pokemon to give off a Blue Aura when Dynamaxed?
 calyrex
+Which is the only Pokemon to give off a \n????Blue Aura when Dynamaxed?
+calyrex
 Name a Pokemon that is in both the \n????Human-like and Bug egg groups.
 Volbeat
 Name a pokemon that has '-dos' at the end of its name
@@ -688,8 +690,12 @@ What feather helps train Pokemon in speed EVs?
 swift feather
 Who is May's dad?
 Norman
+What Pokemon is the natural predator \n????of Durant?
+heatmor
 Who is Bruno's signature Pokemon?
 machamp
+Name a Pokemon that is in both the \n????Grass and Mineral egg groups.
+ferroseed
 What Pokemon turns invisible underwater?
 vaporeon
 Where would you go to revive your fainted Pokemon?
@@ -698,12 +704,16 @@ Pokemon games and their characters were made originally inspired by what type of
 insects
 What two pokemon were static encounters in Generation 4 despite not being a legendaries?
 Lucario riolu
+What two Pokemon were static \n????encounters in Generation 4 despite not \n????being legendaries?
+Rotom drifloon
 evolve due to being female?
 Combee Salandit 
 What is the name of the egg group that contains only 1 Pokemon species?
 ditto
 Which Pokemon is in it's own egg group?
 ditto
+Name an Owner of the Network.
+shmeeb
 Name one of two Pokémon games that involves shadow Pokémon.
 Colosseum
 Who is Kiawe's signature Pokemon?
@@ -716,6 +726,8 @@ Name one of Pikachu's unique Z-Moves.
 Catastropika
 What type of Pokemon does Gym Leader Erika specialize in?
 grass
+What kind of animal is Sealeo?
+seal
 Who is the famous pokeball blacksmith?
 kurt
 What is the Electric type Eeveelution?
@@ -730,10 +742,14 @@ What is the name of the world in which Giratina resides?
 distortion
 What was Serena's starter Pokemon?
 fennekin
+From Generation 1, which Pokemon is \n????known for its lethal punches?
+hitmonchan
 Who is Alder's signature Pokemon?
 volcarona
 Which Pixelmon can only be obtained when crafting PCs?
 porygon
+Name one of the Ghost-Fighting type \n????Pokemon.
+marshadow
 What legendary Pokemon can be caught with any type of Pokeball without it failing?
 Eternatus
 Who did Ash trade his Aipom to?
@@ -874,6 +890,8 @@ What block do you use to breed Pokemon?
 daycare
 constantly drags Team Rocket with them in the Alola region?
 bewear
+Sableye is weak to what type?
+fairy
 What is Pokemon's official mascot Pokemon?
 pikachu
 Who won the Unova league?
@@ -882,6 +900,8 @@ What Pokemon changes an opponents ability if it gets hit with a physical move?
 Cofagrigus
 What Pokemon requires you to spin your character around to evolve?
 milcery
+What is Zamazenta's ability?
+dauntless shield
 What is the only Normal-Dragon type Pokemon?
 drampa
 What pesky Pokemon is known for gnawing absolutely anything and everything?
@@ -963,7 +983,7 @@ pidgey
 Who is Ash's rival in the First Gen?
 gary
 Where does Magearna spawn?
-woodland mansion
+Mushroom fields
 Who is Wulfric's signature Pokemon?
 Avalugg 
 Which two Ultra Beasts have the same typing?
@@ -1172,6 +1192,8 @@ Name an Ex-Manager of PokeSaga
 shiki
 What type of Pokemon is Mewtwo?
 psychic
+How do you check the value of most \n????valuable Pokemon & items?
+prices
 What Pokemon is in both the Human-like and Flying egg groups?
 hawlucha
 What color is Eevee's shiny form?
@@ -1181,6 +1203,8 @@ alomomola
 What type of Pokemon is Misdreavus?
 ghost
 What two types were introduced in Generation 2?
+steel dark
+What two types were introduced in \n????Generation 2?
 steel dark
 Name a Pokémon that evolves when exposed to a Dusk stone.
 misdreavus
