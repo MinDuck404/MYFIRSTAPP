@@ -66,13 +66,23 @@ def with_cooldown(cooldown_time):
 def handle_fishing_competition():
         play_notification_sound()
         activate_selected_window()
-        time.sleep(0.2)
-        keyboard.press(Key.end)
-        keyboard.release(Key.end)
-        time.sleep(60*31)
-        keyboard.press(Key.end)
-        keyboard.release(Key.end)
-        time.sleep(0.2)
+        interval = float(tClick.get())
+        if boss_active and interval >10000:
+            time.sleep(1)
+            keyboard.press('t')
+            keyboard.release('t')
+            time.sleep(0.5)
+            keyboard.type("/fishing forfeit")
+            keyboard.press(Key.enter)
+            keyboard.release(Key.enter)
+        else:
+            time.sleep(0.2)
+            keyboard.press(Key.end)
+            keyboard.release(Key.end)
+            time.sleep(60*31)
+            keyboard.press(Key.end)
+            keyboard.release(Key.end)
+            time.sleep(0.2)
 
 @with_cooldown(2)
 def handle_hook_action():
@@ -251,7 +261,14 @@ def run():
 
         elif "Fishing Competition Started" in line:
             handle_fishing_competition()
-
+            time.sleep(1)
+            keyboard.press('t')
+            keyboard.release('t')
+            time.sleep(0.5)
+            keyboard.type("/fishing forfeit")
+            keyboard.press(Key.enter)
+            keyboard.release(Key.enter)
+            
         elif "hook was instantly bit" in line:
             random_variable = random.randint(1, 4444)
             if fishing(random_variable):
