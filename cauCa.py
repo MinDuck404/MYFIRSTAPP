@@ -116,6 +116,13 @@ def run():
         elif any(pokemon in line for pokemon in ["Azelf", "Manaphy", "Nihilego", "Latios", "Latias", "Suicune"]) and "You reeled in" in line:
             handle_vote_party()
         elif "Fishing Competition Started" in line:
+            time.sleep(1)
+            keyboard.press('t')
+            keyboard.release('t')
+            time.sleep(0.5)
+            keyboard.type("/fishing forfeit")
+            keyboard.press(Key.enter)
+            keyboard.release(Key.enter)
             handle_fishing_competition()
         elif "hook was instantly bit" in line:
             random_variable = random.randint(1, 4444)
