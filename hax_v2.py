@@ -2,52 +2,45 @@ import time
 import re
 from tkinter import *
 import tkinter as tk
-from threading import Thread
+from threading import Thread, Event
 import functools
 import pyperclip
-# import keyboard
 from tkinter import ttk
 import random
 import pygame
 import pygetwindow as gw
-from pynput.keyboard import Key, Controller, Listener
-from pynput.mouse import Controller as MouseController
-from pynput.mouse import Button as MouseButton
+from pynput.keyboard import Key, Controller as KeyboardController
+from pynput.mouse import Controller as MouseController, Button as MouseButton
+import gc
 
-keyboard = Controller()
-mouse = MouseController() 
-# import torch
-# import json
-# from torchvision import transforms
-# from PIL import Image
-# import numpy as np
-# import torch.nn as nn
-# from torchvision import models
+# Khởi tạo các controller
+keyboard = KeyboardController()
+mouse = MouseController()
 
+# Biến toàn cục
 active_counter = 0
 boss_active = False
 selected_window_title = ""
 last_hook_time = 0
 last_random_value = None
+stop_event = Event()  # Thêm Event để kiểm soát thread
 
-# Initialize pygame mixer for playing sounds
+# Khởi tạo pygame mixer
 pygame.mixer.init()
 
-# Function to play notification sound
-def play_notification_sound():
-    pygame.mixer.music.load(notification_sound.get())
-    pygame.mixer.music.set_volume(notification_volume.get())
+def play_notification_sound(sound_file, volume):
+    pygame.mixer.music.load(sound_file)
+    pygame.mixer.music.set_volume(volume)
     pygame.mixer.music.play()
 
 def follow(thefile):
     thefile.seek(0, 2)
-    while True:
+    while not stop_event.is_set():
         line = thefile.readline()
         if not line:
             time.sleep(0.1)
             continue
-        yield line
-
+        yield line.strip()  # Loại bỏ ký tự xuống dòng để giảm bộ nhớ
 
 def with_cooldown(cooldown_time):
     def decorator(func):
@@ -63,107 +56,80 @@ def with_cooldown(cooldown_time):
     return decorator
 
 @with_cooldown(5)
-def handle_fishing_competition():
-        play_notification_sound()
-        activate_selected_window()
-        interval = float(tClick.get())
-        if boss_active and interval >10000:
-            time.sleep(1)
-            keyboard.press('t')
-            keyboard.release('t')
-            time.sleep(0.5)
-            keyboard.type("/fishing forfeit")
-            keyboard.press(Key.enter)
-            keyboard.release(Key.enter)
-        else:
-            time.sleep(0.2)
-            keyboard.press(Key.end)
-            keyboard.release(Key.end)
-            time.sleep(60*31)
-            keyboard.press(Key.end)
-            keyboard.release(Key.end)
-            time.sleep(0.2)
+def handle_fishing_competition(click_interval):
+    play_notification_sound(notification_sound.get(), notification_volume.get())
+    activate_selected_window()
+    if boss_active and click_interval > 10000:
+        time.sleep(1)
+        send_command("/fishing forfeit")
+    else:
+        time.sleep(0.2)
+        keyboard.press(Key.end)
+        keyboard.release(Key.end)
+        time.sleep(60 * 31)
+        keyboard.press(Key.end)
+        keyboard.release(Key.end)
 
 @with_cooldown(2)
 def handle_hook_action():
-        activate_selected_window()
-        time.sleep(0.3)
-        mouse.click(MouseButton.right)
+    activate_selected_window()
+    time.sleep(0.3)
+    mouse.click(MouseButton.right)
 
 @with_cooldown(5)
-def handle_vote_party():
-        play_notification_sound()
-        activate_selected_window()
-        time.sleep(0.2)
+def handle_vote_party(sound_file, volume):
+    play_notification_sound(sound_file, volume)
+    activate_selected_window()
+    time.sleep(0.2)
 
 def start_stop():
     global active_counter
     if button['text'] == 'Start':
         active_counter = 0
-        sta = Thread(target=run)
+        stop_event.clear()
+        sta = Thread(target=run, daemon=True)
         sta.start()
         button.config(text="Stop")
     else:
         active_counter = 1
+        stop_event.set()
         button.config(text="Start")
 
 def auto_restart():
-    while True:
+    while not stop_event.is_set():
         time.sleep(180)  # 3 phút
         if button['text'] == 'Stop':
-            button.invoke()  
-        time.sleep(0.5)  
+            button.invoke()
+        time.sleep(0.5)
         if button['text'] == 'Start':
-            button.invoke()  
+            button.invoke()
 
-def do_not_run_twice(func):
-    prev_call = None
+def send_command(command):
+    keyboard.press('t')
+    keyboard.release('t')
+    time.sleep(0.1)
+    keyboard.type(command)
+    keyboard.press(Key.enter)
+    keyboard.release(Key.enter)
 
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        nonlocal prev_call
-        if (args, kwargs) == prev_call:
-            return None
-        prev_call = args, kwargs
-        return func(*args, **kwargs)
-    return wrapper
-
-@do_not_run_twice
-def auto(pkm, t):
+def auto(pkm, delay):
     if not boss_active:
         lAnswer.configure(text=pkm.lower())
         pyperclip.copy(pkm.lower())
         activate_selected_window()
-        if t < 2.5:
-            t+=1
-        time.sleep(t)
-        keyboard.press('t')
-        keyboard.release('t')
-        keyboard.press(Key.ctrl)
-        keyboard.press('a')
-        keyboard.release('a')
-        keyboard.release(Key.ctrl)
-        time.sleep(0.1)
-        keyboard.press(Key.ctrl)
-        keyboard.press('v')
-        keyboard.release('v')
-        keyboard.release(Key.ctrl)
-        time.sleep(0.1)
-        keyboard.press(Key.enter)
-        keyboard.release(Key.enter)
+        delay = max(2.5, delay)  # Đảm bảo delay tối thiểu
+        time.sleep(delay)
+        send_command(pkm.lower())
         time.sleep(3)
 
 def fishing(random_variable):
     global last_hook_time, last_random_value
     current_time = time.time()
-    
-    # If it's been more than 5 seconds since last hook or it's a new random value
     if (current_time - last_hook_time > 5) or (random_variable != last_random_value):
         last_hook_time = current_time
         last_random_value = random_variable
         return True
     return False
-
 
 def activate_selected_window():
     if selected_window_title:
@@ -175,7 +141,7 @@ def activate_selected_window():
 
 def refresh_window_list():
     windows = gw.getAllTitles()
-    combobox_window['values'] = [window for window in windows if window.strip()]
+    combobox_window['values'] = [w for w in windows if w.strip()]
 
 def select_window(event):
     global selected_window_title
@@ -188,120 +154,87 @@ def run():
     unr = float(tUnscramble.get())
     q5 = float(tQuest5.get())
     q6 = float(tQuest.get())
-    with open("Pokedex.txt", 'r') as f:
-        a = f.read().splitlines()
-    with open('h-tl.txt', 'r') as q:
-        quest = q.read().splitlines()
-    
-    logfile = open(r'C:\Users\duccj\AppData\Roaming\.technic\modpacks\ultimate-reallife-roleplay\logs\latest.log', 'r')
-    loglines = follow(logfile)
+    click_interval = float(tClick.get())
 
-    boss_thread = Thread(target=toggle_boss_mode)
-    boss_thread.start()
-    auto_restart_thread = Thread(target=auto_restart, daemon=True)
-    auto_restart_thread.start()
+    # Đọc file log
+    with open(r'C:\Users\duccj\AppData\Roaming\.technic\modpacks\ultimate-reallife-roleplay\logs\latest.log', 'r') as logfile:
+        loglines = follow(logfile)
 
-    for line in loglines:
-        if active_counter == 1:
-            break
-        
-        if "Professor Oak" in line:
-            next_lines = [next(loglines) for _ in range(3)]
-            for following_line in next_lines:
-                if " dex number" in following_line:
-                    # Lấy dex number
-                    i = -3
-                    m = 1
-                    pkm = 0
-                    while following_line[i] != ' ':
-                        if following_line[i].isdigit():
-                            pkm += int(following_line[i]) * m
-                            i -= 1
-                            m *= 10
-                    auto(a[pkm-1], len(a[pkm-1]) * dex + 1.2145)
-                
-                elif "Unscramble the word" in following_line:
-                    # Xử lý giải mã từ
-                    scrambled_word = following_line.split(":")[-1].strip()
-                    print(f"Scrambled word detected: {scrambled_word}")
-                    for word in a:
-                        if len(word) == len(scrambled_word):
-                            if sorted(word.lower()) == sorted(scrambled_word.lower()):
-                                if len(word)<5:
-                                    auto(word,len(word)*unr)
-                                elif len(word)<=9:
-                                    auto(word,len(word)*(unr+0.111))
-                                else:
-                                    auto(word,len(word)*(unr+0.211))
-                                
-                elif "Pixelmon will begin in 10 seconds!" in following_line:
-                    pass
-                
-                else:        
-                        # Xử lý câu hỏi trong quest
-                        for idx, quest_item in enumerate(quest[::2]):
-                            # Loại bỏ các ký tự không phải chữ cái, số và khoảng trắng (bao gồm cả dấu câu, dấu hỏi, etc.)
-                            cleaned_quest_item = re.sub(r'[^\w\s]', '', quest_item.lower()).strip() # Loại bỏ ký tự không phải chữ cái, số
-                            cleaned_following_line = re.sub(r'[^\w\s]', '', following_line.lower()).strip() # Xử lý `following_line` sau khi đã làm sạch
-                        
-                            # Loại bỏ tất cả các chữ 'n' (viết hoa hoặc viết thường) trong cả cleaned_quest_item và cleaned_following_line
-                            cleaned_quest_item = re.sub(r'n', '', cleaned_quest_item)  
-                            cleaned_following_line = re.sub(r'n', '', cleaned_following_line)  # Loại bỏ 'n' trong cleaned_following_line
+        for line in loglines:
+            if stop_event.is_set():
+                break
 
+            # Xử lý các sự kiện
+            if "Professor Oak" in line:
+                next_lines = [next(loglines, "") for _ in range(3)]
+                for following_line in next_lines:
+                    if " dex number" in following_line:
+                        pkm = extract_dex_number(following_line)
+                        if pkm:
+                            with open("Pokedex.txt", 'r') as f:
+                                a = f.read().splitlines()
+                            auto(a[pkm-1], len(a[pkm-1]) * dex + 1.2145)
+                    elif "Unscramble the word" in following_line:
+                        scrambled_word = following_line.split(":")[-1].strip()
+                        with open("Pokedex.txt", 'r') as f:
+                            for word in f:
+                                word = word.strip()
+                                if len(word) == len(scrambled_word) and sorted(word.lower()) == sorted(scrambled_word.lower()):
+                                    delay = unr + (0.111 if len(word) <= 9 else 0.211)
+                                    auto(word, len(word) * delay)
+                                    break
+                    elif "Pixelmon will begin in 10 seconds!" in following_line:
+                        pass
+                    else:
+                        with open('h-tl.txt', 'r') as q:
+                            quest = q.read().splitlines()
+                        for idx in range(0, len(quest), 2):
+                            cleaned_quest = re.sub(r'[^\w\s]', '', quest[idx].lower()).replace('n', '')
+                            cleaned_line = re.sub(r'[^\w\s]', '', following_line.lower()).replace('n', '')
+                            if cleaned_quest in cleaned_line:
+                                answer = quest[idx + 1].lower()
+                                delay = q5 if len(answer) < 6 else len(answer) * q6 + 0.456
+                                auto(answer, delay)
+                                break
 
-                            if cleaned_quest_item in cleaned_following_line:
-                                answer = quest[idx * 2 + 1].lower()
-                                time_delay = q5 if len(answer) < 6 else len(answer) * q6 + 0.456
-                                auto(answer, time_delay)
-                                
-        elif "spawned nearby!" in line or re.search(r'\[Pixelmon\].*has spawned in a', line)  or "votes remaining until the next Vote Party!" in line or "World Boss has spawned!" in line  or "Yanoo" in line or "yano" in line or "yanoo" in line:
-            handle_vote_party()
-        elif any(pokemon in line for pokemon in ["Azelf", "Manaphy", "Nihilego", "Latios", "Latias", "Suicune"]) and "You reeled in" in line:
-            handle_vote_party()
+            elif any(event in line for event in ["spawned nearby!", "votes remaining until the next Vote Party!", "World Boss has spawned!", "Yanoo", "yano", "yanoo"]) or re.search(r'\[Pixelmon\].*has spawned in a', line):
+                handle_vote_party(notification_sound.get(), notification_volume.get())
+            elif any(pokemon in line for pokemon in ["Azelf", "Manaphy", "Nihilego", "Latios", "Latias", "Suicune"]) and "You reeled in" in line:
+                handle_vote_party(notification_sound.get(), notification_volume.get())
+            elif "Fishing Competition Started" in line:
+                handle_fishing_competition(click_interval)
+                send_command("/fishing forfeit")
+            elif "hook was instantly bit" in line:
+                if fishing(random.randint(1, 4444)):
+                    handle_hook_action()
+            elif "You can only use custom fishing rods at the Fishing Warp!" in line:
+                handle_fishing_competition(click_interval)
 
-        elif "Fishing Competition Started" in line:
-            handle_fishing_competition()
-            time.sleep(1)
-            keyboard.press('t')
-            keyboard.release('t')
-            time.sleep(0.5)
-            keyboard.type("/fishing forfeit")
-            keyboard.press(Key.enter)
-            keyboard.release(Key.enter)
-            
-        elif "hook was instantly bit" in line:
-            random_variable = random.randint(1, 4444)
-            if fishing(random_variable):
-                handle_hook_action()
+            # Giải phóng bộ nhớ định kỳ
+            gc.collect()
 
-        elif "You can only use custom fishing rods at the Fishing Warp!" in line:
-                handle_fishing_competition()
-
-
+def extract_dex_number(line):
+    match = re.search(r'(\d+)\s*$', line)
+    return int(match.group(1)) if match else None
 
 def toggle_boss_mode():
     global boss_active
+    from pynput.keyboard import Listener
 
     def on_press(key):
         global boss_active
-        try:
-            # Kiểm tra nếu phím ` được nhấn
-            if hasattr(key, 'char') and key.char == '`':  # Nhận diện phím bằng ký tự
-                boss_active = not boss_active
-                boss.set(boss_active)
-                print(f"Boss Mode {'Activated' if boss_active else 'Deactivated'}")
-                if boss_active:
-                    boss_func = Thread(target=boss_press_r, daemon=True)
-                    boss_func.start()
-        except AttributeError:
-            pass  # Bỏ qua nếu key không có thuộc tính `char`
+        if hasattr(key, 'char') and key.char == '`':
+            boss_active = not boss_active
+            boss.set(boss_active)
+            print(f"Boss Mode {'Activated' if boss_active else 'Deactivated'}")
+            if boss_active:
+                Thread(target=boss_press_r, daemon=True).start()
 
-    # Lắng nghe phím trong luồng riêng
     listener = Listener(on_press=on_press)
     listener.start()
 
 def boss_press_r():
-    while boss_active:
+    while boss_active and not stop_event.is_set():
         interval = float(tClick.get())
         activate_selected_window()
         keyboard.press('r')
@@ -312,16 +245,15 @@ def on_closing():
     global active_counter, boss_active
     active_counter = 1
     boss_active = False
+    stop_event.set()
     window.destroy()
 
+# GUI setup
 window = Tk()
 window.title("Yanoo's Program")
-window.iconbitmap("yano.ico")
-
-# Bind the on_closing function to the window close event
 window.protocol("WM_DELETE_WINDOW", on_closing)
 
-# Labels
+# Các widget GUI (giữ nguyên như code gốc)
 ldex = Label(window, text='Dex Number: ', font=('Arial', 15))
 ldex.grid(column=0, row=1)
 lUnscramble = Label(window, text='Unscramble: ', font=('Arial', 15))
@@ -331,15 +263,13 @@ lQuest5.grid(column=0, row=3)
 lQuest = Label(window, text='Quest > 5: ', font=('Arial', 15))
 lQuest.grid(column=0, row=4)
 lAnswer = Label(window, text='Answer', font=('Arial', 20))
-lAnswer = Label(window, text='Answer', font=('Arial', 20))
 lAnswer.grid(column=0, row=5)
 lClick = Label(window, text='time: ', font=('Arial', 15))
 lClick.grid(column=0, row=7)
 
-# Text boxes
 tdex = Entry(window, width=20)
 tdex.insert(END, 0.324)
-tdex.grid(row=1, column=1, ipady=1, ipadx=1)
+tdex.grid(row=1, column=1)
 tUnscramble = Entry(window, width=20)
 tUnscramble.insert(END, 0.244)
 tUnscramble.grid(column=1, row=2)
@@ -359,26 +289,21 @@ notification_volume = Scale(window, from_=0, to=1, resolution=0.1, orient=HORIZO
 notification_volume.set(0.5)
 notification_volume.grid(column=2, row=8, sticky=EW, columnspan=4)
 
-# Buttons
 button = Button(window, text='Start', command=start_stop)
 button.grid(row=0, column=0, sticky=EW, columnspan=4)
 
-# Checkboxes
-check = tk.IntVar()
 boss = tk.IntVar()
-vAFK = tk.IntVar()
-
 c2 = tk.Checkbutton(window, text='Boss?', variable=boss, onvalue=1, offvalue=0)
 c2.grid(column=1, row=6)
 
-
-# Combobox for window titles
 combobox_window = ttk.Combobox(window, state="readonly", width=47)
 combobox_window.grid(column=0, row=9, columnspan=3)
 combobox_window.bind('<<ComboboxSelected>>', select_window)
 
-# Refresh button to update window list
 refresh_button = Button(window, text='Refresh Windows', command=refresh_window_list)
 refresh_button.grid(column=3, row=9, sticky=EW)
+
+# Khởi động thread boss mode
+Thread(target=toggle_boss_mode, daemon=True).start()
 
 window.mainloop()
